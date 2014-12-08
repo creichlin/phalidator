@@ -1,0 +1,8 @@
+<ivy-module version="2.0">
+  <info organisation="ch.kerbtier" module="ltree"/>
+  <dependencies>
+    <dependency org="commons-io" name="commons-io" rev="2.4"/>
+    <dependency org="com.google.guava" name="guava" rev="17.0"/>
+    <dependency org="org.antlr" name="antlr4-runtime" rev="4.2.2"/>
+  </dependencies>
+</ivy-module>
