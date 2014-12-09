@@ -15,7 +15,7 @@ public class XCompare implements XBool {
   }
   
   public String toString() {
-    return "(" + left + " + operation.sign() + " + right + ")";
+    return "(" + left + operation.sign() + right + ")";
   }
 
   @Override

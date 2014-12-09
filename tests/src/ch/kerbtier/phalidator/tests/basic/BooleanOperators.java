@@ -1,9 +1,9 @@
 package ch.kerbtier.phalidator.tests.basic;
 
 import static org.junit.Assert.*;
-import static ch.kerbtier.phalidator.tests.util.PropertiesMap.read;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import ch.kerbtier.phalidator.Parse;
 import ch.kerbtier.phalidator.Phalidator;
 import ch.kerbtier.phalidator.map.MapValidator;
 
-public class InOperator {
+public class BooleanOperators {
   
   private Phalidator phalidator;
   
@@ -29,15 +29,8 @@ public class InOperator {
   }
 
   @Test
-  public void testValidIn() {
-    MapValidator mapValidator = new MapValidator(phalidator, "in", read(this.getClass(), "in.valid"));
+  public void tests() {
+    MapValidator mapValidator = new MapValidator(phalidator, "booleanOperators", new HashMap<String, String>());
     assertTrue(mapValidator.isValid());
-  }
-
-  @Test
-  public void testInvalidIn() {
-    MapValidator mapValidator = new MapValidator(phalidator, "in", read(this.getClass(), "in.invalid"));
-    assertFalse(mapValidator.isValid());
-    assertEquals(6, mapValidator.getInvalidRules().size());
   }
 }

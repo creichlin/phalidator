@@ -19,4 +19,12 @@ public class XOr implements XBool {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public XBool getLeft() {
+    return left;
+  }
+
+  public XBool getRight() {
+    return right;
+  }
 }

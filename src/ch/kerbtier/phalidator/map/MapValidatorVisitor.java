@@ -10,7 +10,9 @@ import java.util.Set;
 
 import ch.kerbtier.phalidator.AbstractVisitor;
 import ch.kerbtier.phalidator.InvalidOperandsException;
+import ch.kerbtier.phalidator.expression.XAnd;
 import ch.kerbtier.phalidator.expression.XArray;
+import ch.kerbtier.phalidator.expression.XBool;
 import ch.kerbtier.phalidator.expression.XChars;
 import ch.kerbtier.phalidator.expression.XCharsOperation;
 import ch.kerbtier.phalidator.expression.XCompare;
@@ -19,6 +21,8 @@ import ch.kerbtier.phalidator.expression.XField;
 import ch.kerbtier.phalidator.expression.XIn;
 import ch.kerbtier.phalidator.expression.XLengthOperation;
 import ch.kerbtier.phalidator.expression.XLettersOperation;
+import ch.kerbtier.phalidator.expression.XNot;
+import ch.kerbtier.phalidator.expression.XOr;
 import ch.kerbtier.phalidator.expression.XPression;
 import ch.kerbtier.phalidator.expression.XRange;
 import ch.kerbtier.phalidator.expression.XSet;
@@ -54,8 +58,12 @@ public class MapValidatorVisitor extends AbstractVisitor {
       } else if (op == Operation.EQUAL) {
         return ((BigDecimal) l).compareTo((BigDecimal) r) == 0;
       }
+    } else if(l instanceof String && r instanceof String) {
+      if (op == Operation.EQUAL) {
+        return l.equals(r);
+      }
     }
-    throw new InvalidOperandsException(left + " " + right);
+    throw new InvalidOperandsException(xCompare + " ");
   }
 
   @Override
@@ -168,4 +176,38 @@ public class MapValidatorVisitor extends AbstractVisitor {
   public Object visit(XChars xChars) {
     return xChars.getValue();
   }
+
+  @Override
+  public Object visit(XAnd xAnd) {
+    Object left = xAnd.getLeft().accept(this);
+    Object right = xAnd.getRight().accept(this);
+    
+    if(left instanceof Boolean && right instanceof Boolean) {
+      return ((Boolean)left) && ((Boolean)right);
+    }
+    throw new InvalidOperandsException(xAnd + "");
+  }
+
+  @Override
+  public Object visit(XOr xOr) {
+    Object left = xOr.getLeft().accept(this);
+    Object right = xOr.getRight().accept(this);
+    
+    if(left instanceof Boolean && right instanceof Boolean) {
+      return ((Boolean)left) && ((Boolean)right);
+    }
+    throw new InvalidOperandsException(xOr + "");
+  }
+
+  @Override
+  public Object visit(XNot xNot) {
+    Object operand = xNot.getOperand().accept(this);
+    
+    if(operand instanceof Boolean) {
+      return !((Boolean)operand);
+    }
+    throw new InvalidOperandsException(xNot + "");
+  }
+  
+  
 }

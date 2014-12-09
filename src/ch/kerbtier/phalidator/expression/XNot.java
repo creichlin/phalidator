@@ -17,4 +17,8 @@ public class XNot implements XBool {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public XBool getOperand() {
+    return expression;
+  }
 }
