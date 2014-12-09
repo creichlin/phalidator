@@ -1,5 +1,7 @@
 package ch.kerbtier.phalidator.expression;
 
-public interface XPression {
+import ch.kerbtier.phalidator.TreeElement;
+
+public interface XPression extends TreeElement {
 
 }

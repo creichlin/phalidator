@@ -2,10 +2,10 @@ grammar Phal;
 
 start           : namespace+;
 
-namespace       : IDENTIFIER  '{' (namespace | norm)* '}';
+namespace       : identifier  '{' (namespace | norm)* '}';
 
 
-norm            : IDENTIFIER ':' booleanExpression;
+norm            : identifier ':' booleanExpression;
 
 // BOOLEAN EXPRESSION
 booleanExpression: 
@@ -46,7 +46,7 @@ variable          : DELIMITER                       // .
 operation         : LETTERS
                   | LENGTH;
 
-field             : '$'(IDENTIFIER);
+field             : '$'(identifier);
 
 set               : expression RANGE expression
                   | string
@@ -57,6 +57,10 @@ string            : QUOTED_STRING;
 array             : '[' ((expression ',') * expression)? ']';
 
 regexp            : REGEXP;
+
+identifier        : IDENTIFIER | LETTERS | CHARS | LENGTH | MATCHES | IN | AND | OR;
+
+
 
 
 // NUMBERS

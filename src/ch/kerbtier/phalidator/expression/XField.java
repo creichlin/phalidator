@@ -1,5 +1,7 @@
 package ch.kerbtier.phalidator.expression;
 
+import ch.kerbtier.phalidator.PhalidatorVisitor;
+
 public class XField implements XPression, XString {
   private String name;
   
@@ -13,5 +15,14 @@ public class XField implements XPression, XString {
     } else {
       return "$" + name;
     }
+  }
+
+  @Override
+  public Object accept(PhalidatorVisitor visitor) {
+    return visitor.visit(this);
+  }
+
+  public String getName() {
+    return name;
   }
 }

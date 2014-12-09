@@ -1,11 +1,12 @@
 package ch.kerbtier.phalidator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Namespace {
+public class Namespace implements Iterable<Rule>, TreeElement {
   private Map<String, Namespace> children = new LinkedHashMap<String, Namespace>();
   private List<Rule> rules = new ArrayList<Rule>();
 
@@ -24,6 +25,18 @@ public class Namespace {
 
   private String getName() {
     return name;
+  }
+  
+  public Namespace get(String entity) {
+    if(children.containsKey(entity)) {
+      return children.get(entity);
+    }
+    throw new EntityNotFoundException(entity);
+  }
+
+  @Override
+  public Iterator<Rule> iterator() {
+    return rules.iterator();
   }
 
   public String toString() {
@@ -58,5 +71,10 @@ public class Namespace {
 
   public void add(Rule rule) {
     rules.add(rule);
+  }
+
+  @Override
+  public Object accept(PhalidatorVisitor visitor) {
+    return visitor.visit(this);
   }
 }

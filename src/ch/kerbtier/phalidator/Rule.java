@@ -2,7 +2,7 @@ package ch.kerbtier.phalidator;
 
 import ch.kerbtier.phalidator.expression.XBool;
 
-public class Rule {
+public class Rule implements TreeElement {
 
   private final String name;
   private final XBool expression;
@@ -18,5 +18,10 @@ public class Rule {
 
   public XBool getExpression() {
     return expression;
+  }
+
+  @Override
+  public Object accept(PhalidatorVisitor visitor) {
+    return visitor.visit(this);
   }
 }

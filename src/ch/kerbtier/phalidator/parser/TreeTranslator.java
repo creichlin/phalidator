@@ -8,17 +8,13 @@ import ch.kerbtier.phalidator.expression.XArray;
 import ch.kerbtier.phalidator.expression.XBool;
 import ch.kerbtier.phalidator.expression.XChars;
 import ch.kerbtier.phalidator.expression.XCharsOperation;
+import ch.kerbtier.phalidator.expression.XCompare;
 import ch.kerbtier.phalidator.expression.XDecimal;
-import ch.kerbtier.phalidator.expression.XEqual;
 import ch.kerbtier.phalidator.expression.XField;
 import ch.kerbtier.phalidator.expression.XIn;
 import ch.kerbtier.phalidator.expression.XLengthOperation;
-import ch.kerbtier.phalidator.expression.XLess;
-import ch.kerbtier.phalidator.expression.XLessEqual;
 import ch.kerbtier.phalidator.expression.XLettersOperation;
 import ch.kerbtier.phalidator.expression.XMatches;
-import ch.kerbtier.phalidator.expression.XMore;
-import ch.kerbtier.phalidator.expression.XMoreEqual;
 import ch.kerbtier.phalidator.expression.XNot;
 import ch.kerbtier.phalidator.expression.XOr;
 import ch.kerbtier.phalidator.expression.XPattern;
@@ -57,7 +53,7 @@ public class TreeTranslator extends PhalBaseVisitor<Object> {
 
   @Override
   public Object visitNamespace(NamespaceContext ctx) {
-    Namespace namespace = new Namespace(ctx.IDENTIFIER().getText());
+    Namespace namespace = new Namespace(ctx.identifier().getText());
     
     for(NamespaceContext ns: ctx.namespace()) {
       namespace.add((Namespace)visit(ns));
@@ -72,7 +68,7 @@ public class TreeTranslator extends PhalBaseVisitor<Object> {
 
   @Override
   public Object visitNorm(NormContext ctx) {
-    Rule rule = new Rule(ctx.IDENTIFIER().getText(), (XBool)visit(ctx.booleanExpression()));
+    Rule rule = new Rule(ctx.identifier().getText(), (XBool)visit(ctx.booleanExpression()));
     return rule;
   }
 
@@ -93,17 +89,17 @@ public class TreeTranslator extends PhalBaseVisitor<Object> {
   @Override
   public Object visitBooleanValue(BooleanValueContext ctx) {
     if(ctx.LESS() != null) {
-      return new XLess((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)));
+      return new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.LESS);
     } else if(ctx.LESS_EQUAL() != null) {
-      return new XLessEqual((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)));
+      return new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.LESS_EQUAL);
     } else if(ctx.MORE() != null) {
-      return new XMore((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)));
+      return new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.MORE);
     } else if(ctx.MORE_EQUAL() != null) {
-      return new XMoreEqual((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)));
+      return new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.MORE_EQUAL);
     } else if(ctx.EQUAL() != null) {
-      return new XEqual((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)));
+      return new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.EQUAL);
     } else if(ctx.NOT_EQUAL() != null) {
-      return new XNot(new XEqual((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1))));
+      return new XNot(new XCompare((XPression)visit(ctx.expression(0)), (XPression)visit(ctx.expression(1)), XCompare.Operation.EQUAL));
     } else if(ctx.booleanExpression() != null) {
       return visit(ctx.booleanExpression());
     } else if(ctx.IN() != null) {
@@ -125,7 +121,7 @@ public class TreeTranslator extends PhalBaseVisitor<Object> {
     } else if(ctx.variable() != null) {
       VariableContext fc = ctx.variable();
       OperationContext oc = fc.operation();
-      XField xfield = new XField(fc.field() != null ? fc.field().IDENTIFIER().getText() : null);
+      XField xfield = new XField(fc.field() != null ? fc.field().identifier().getText() : null);
       XOperation operation = null;
       
       

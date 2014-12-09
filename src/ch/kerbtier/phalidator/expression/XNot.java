@@ -1,5 +1,7 @@
 package ch.kerbtier.phalidator.expression;
 
+import ch.kerbtier.phalidator.PhalidatorVisitor;
+
 public class XNot implements XBool {
   private XBool expression;
   
@@ -9,5 +11,10 @@ public class XNot implements XBool {
   
   public String toString() {
     return "!(" + expression + ")";
+  }
+  
+  @Override
+  public Object accept(PhalidatorVisitor visitor) {
+    return visitor.visit(this);
   }
 }

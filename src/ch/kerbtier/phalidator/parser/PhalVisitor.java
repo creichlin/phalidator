@@ -26,6 +26,13 @@ public interface PhalVisitor<T> extends ParseTreeVisitor<T> {
 	T visitRegexp(@NotNull PhalParser.RegexpContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link PhalParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(@NotNull PhalParser.IdentifierContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link PhalParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
