@@ -17,4 +17,8 @@ public class XChars implements XString, XSet {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public Object getValue() {
+    return value;
+  }
 }

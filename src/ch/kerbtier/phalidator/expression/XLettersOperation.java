@@ -17,4 +17,8 @@ public class XLettersOperation implements XOperation {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public XString getField() {
+    return value;
+  }
 }

@@ -6,3 +6,12 @@ length {
   val5: length == 5
   val6: length in 3..5
 }
+
+in {
+  val1: . in ["FOO", "BAR"]
+  val2: . in "ABCD"
+  val3: length in [1, 2, 3, 4]
+  val4: length in 1..4
+  val5: letters in "ABCDE"
+  val6: letters in ["x", "y", "z"]
+}
