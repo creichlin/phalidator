@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import ch.kerbtier.phalidator.AbstractVisitor;
 import ch.kerbtier.phalidator.InvalidOperandsException;
 import ch.kerbtier.phalidator.expression.XAnd;
 import ch.kerbtier.phalidator.expression.XArray;
-import ch.kerbtier.phalidator.expression.XBool;
 import ch.kerbtier.phalidator.expression.XChars;
 import ch.kerbtier.phalidator.expression.XCharsOperation;
 import ch.kerbtier.phalidator.expression.XCompare;
@@ -21,11 +21,12 @@ import ch.kerbtier.phalidator.expression.XField;
 import ch.kerbtier.phalidator.expression.XIn;
 import ch.kerbtier.phalidator.expression.XLengthOperation;
 import ch.kerbtier.phalidator.expression.XLettersOperation;
+import ch.kerbtier.phalidator.expression.XMatches;
 import ch.kerbtier.phalidator.expression.XNot;
 import ch.kerbtier.phalidator.expression.XOr;
 import ch.kerbtier.phalidator.expression.XPression;
 import ch.kerbtier.phalidator.expression.XRange;
-import ch.kerbtier.phalidator.expression.XSet;
+import ch.kerbtier.phalidator.expression.XRegexp;
 import ch.kerbtier.phalidator.expression.XString;
 import ch.kerbtier.phalidator.expression.XCompare.Operation;
 
@@ -63,7 +64,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
         return l.equals(r);
       }
     }
-    throw new InvalidOperandsException(xCompare + " ");
+    throw new InvalidOperandsException(xCompare);
   }
 
   @Override
@@ -73,7 +74,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
     if (result instanceof String) {
       return new BigDecimal(((String) result).length());
     }
-    throw new InvalidOperandsException(result + "");
+    throw new InvalidOperandsException(xLengthOperation);
   }
   
   @Override
@@ -83,7 +84,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
     if (result instanceof String) {
       return result;
     }
-    throw new InvalidOperandsException(result + "");
+    throw new InvalidOperandsException(xCharsOperation);
   }
 
   @Override
@@ -97,7 +98,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
       }
       return letters;
     }
-    throw new InvalidOperandsException(result + "");
+    throw new InvalidOperandsException(xLettersOperation);
   }
 
   @Override
@@ -160,7 +161,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
       return values;
     }
 
-    throw new InvalidOperandsException(xRange + "");
+    throw new InvalidOperandsException(xRange);
   }
 
   @Override
@@ -185,7 +186,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
     if(left instanceof Boolean && right instanceof Boolean) {
       return ((Boolean)left) && ((Boolean)right);
     }
-    throw new InvalidOperandsException(xAnd + "");
+    throw new InvalidOperandsException(xAnd);
   }
 
   @Override
@@ -196,7 +197,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
     if(left instanceof Boolean && right instanceof Boolean) {
       return ((Boolean)left) && ((Boolean)right);
     }
-    throw new InvalidOperandsException(xOr + "");
+    throw new InvalidOperandsException(xOr);
   }
 
   @Override
@@ -206,8 +207,23 @@ public class MapValidatorVisitor extends AbstractVisitor {
     if(operand instanceof Boolean) {
       return !((Boolean)operand);
     }
-    throw new InvalidOperandsException(xNot + "");
+    throw new InvalidOperandsException(xNot);
   }
-  
-  
+
+  @Override
+  public Object visit(XMatches xMatches) {
+    Object value = xMatches.getValue().accept(this);
+    Object pattern = xMatches.getPattern().accept(this);
+
+    if(value instanceof String && pattern instanceof Pattern) {
+      Pattern p = (Pattern)pattern;
+      return p.matcher((String)value).matches();
+    }
+    throw new InvalidOperandsException(xMatches);
+  }
+
+  @Override
+  public Object visit(XRegexp xRegexp) {
+    return xRegexp.getPattern();
+  }
 }

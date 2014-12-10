@@ -19,4 +19,8 @@ public class XRegexp implements XPattern {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public Pattern getPattern() {
+    return pattern;
+  }
 }

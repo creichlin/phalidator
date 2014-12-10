@@ -20,4 +20,13 @@ public class XMatches implements XBool {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+
+  public XPression getValue() {
+    return value;
+  }
+
+  public XPattern getPattern() {
+    return pattern;
+  }
 }

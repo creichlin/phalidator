@@ -25,3 +25,8 @@ booleanOperators {
   str_equals : "AA" == "AA" and !("AB" == "BA")
   unequals: 2 != 3 and 3 != 2 and !(3 != 3)
 }
+
+regexpMatch {
+  email: "john.doe@company.com" matches /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,8}/
+  domain: "www.hippi.com-pany.com" matches /[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+/
+}

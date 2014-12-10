@@ -162,7 +162,9 @@ public class TreeTranslator extends PhalBaseVisitor<Object> {
 
   @Override
   public Object visitRegexp(RegexpContext ctx) {
-    return new XRegexp(ctx.getText());
+    String txt = ctx.getText();
+    txt = txt.substring(1, txt.length() - 1);
+    return new XRegexp(txt);
   }
 
   @Override
