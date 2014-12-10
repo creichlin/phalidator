@@ -1,12 +1,12 @@
-GOAL
+Goal
 ====
 
 The goal of this lib is to create userinput validator code for different languages.
 
 The first implementation would be for javascript and java.
 
-IDEAS
-=====
+Idea
+====
 
 The validators are written in a simple script which defines validation expressions for different fields of a model.
 
@@ -18,7 +18,7 @@ Different visitors will produce code for different target languages which can be
 
 The target can be for example, javascript/html-forms or javascript/json or java/beans.
 
-PROGRESS
+Progress
 ========
 
 Antlr4 parser and visitor to create validation tree.
@@ -52,4 +52,13 @@ Should generate code that could look like following in js:
       }
     }
 
-Similar code in java which can be given a parameter map or some beans
+Targets
+=======
+
+Java Map validator using validation tree
+----------------------------------------
+
+This validator uses the resulting validatiron tree of the parser. It's not generated and uses the dependencies including antlr4 runtime.
+
+[MapValidationExample.java](examples/java/src/ch/kerbtier/phalidator/examples/MapValidationExample.java) 
+

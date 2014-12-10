@@ -1,0 +1,7 @@
+user {
+  name: length > 0
+  lastName: length > 0
+  email: . matches /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,8}/
+  city: length > 1
+  zip: length in 4..6 and letters in "0123456789"
+}
