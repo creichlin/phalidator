@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ InOperator.class, Length.class, BooleanOperators.class, RegexpMatch.class })
+@SuiteClasses({ InOperator.class, Length.class, BooleanOperators.class, RegexpMatch.class, FieldReferences.class })
 public class AllBasicTests {
 
 }

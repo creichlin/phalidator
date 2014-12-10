@@ -30,3 +30,12 @@ regexpMatch {
   email: "john.doe@company.com" matches /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,8}/
   domain: "www.hippi.com-pany.com" matches /[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+/
 }
+
+fieldReferences {
+  test1: $field1 == "foo"
+  test2: $field1.length == 3
+  test3: $field1.letters in "fo"
+  test4: $field1 != $field2
+  test5: $field1.length == $field2.length
+  test6: $field2 == "bar"
+}
