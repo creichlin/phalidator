@@ -1,0 +1,62 @@
+length: 
+  rule: |
+    length {
+      l0: $input.length == 0
+      l1: $input.length == 1
+      l2: $input.length == 2
+      l3: $input.length == 3
+      l15: $input.length == 15
+      l32: $input.length == 32
+    }
+  
+  input:
+    "":  [l0]
+    a:   [l1]
+    aa:  [l2]
+    aaa: [l3]
+    aaaaabbbbbccccc: [l15]
+    aaaaabbbbbcccccaaaaabbbbbcccccxx: [l32]
+    
+
+in:
+  rule: |
+    in {
+      val1: "FOO" in ["FOO", "BAR"]
+      val2: "A" in "ABCD"
+      val3: 3 in [1, 2, 3, 4]
+      val4: 3 in 1..4
+    //  val5: "ABBA".letters in "ABCDE"
+    //  val6: "xyyyxyxy".letters in ["x", "y", "z"]
+    }
+
+comparison:
+  rule: |
+    comparison {
+      less: 3 < 4 and 2 < 4 and -3 < 4 and !(4 < 4 or 4 < 5)
+      more: 4 > 3 and 5 > -3 and -3 > -8 and !(3 > 4 or 5 > 5)
+      less_equals: 3 >= 3 and 3 >= 2 and !(3 >= 4)
+      more_equals: 3 <= 3 and 3 <= 4 and !(4 <= 3)
+      equals: 3 == 3 and !(2 == 3)
+      str_equals : "AA" == "AA" and !("AB" == "BA")
+      unequals: 2 != 3 and 3 != 2 and !(3 != 3)
+    }
+
+match:
+  rule: |
+    match {
+      email: "john.doe@company.com" matches /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,8}/
+      domain: "www.hippi.com-pany.com" matches /[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+/
+    }
+    
+    
+fieldReferences:
+  rule: |
+    fieldReferences {
+      test1: $input == "foo"
+      test2: $input.length == 3
+      test3: $input.letters in "fo"
+      test6: $input == "bar"
+    }    
+  input:
+    foo: [test1, test2, test3]
+    bar: [test2, test6]

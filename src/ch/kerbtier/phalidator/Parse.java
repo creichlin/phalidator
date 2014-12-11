@@ -3,6 +3,7 @@ package ch.kerbtier.phalidator;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -24,15 +25,23 @@ public class Parse {
     InputStream is = type.getResourceAsStream(name);
     return stream(is);
   }
+
+  public static Phalidator string(String input) {
+    Reader r = new StringReader(input);
+    return reader(r);
+  }
   
   public static Phalidator stream(InputStream in) {
     return stream(in, null);
   }
 
   public static Phalidator stream(InputStream in, Charset charset) {
+    Reader reader = new InputStreamReader(in, charset == null ? Charset.defaultCharset() : charset);
+    return reader(reader);
+  }
+  
+  public static Phalidator reader(Reader reader) {
     try {
-      Reader reader = new InputStreamReader(in, charset == null ? Charset.defaultCharset() : charset);
-
       ANTLRInputStream input = new ANTLRInputStream(reader);
 
       PhalLexer lexer = new PhalLexer(input);

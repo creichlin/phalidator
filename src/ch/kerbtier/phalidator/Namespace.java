@@ -77,4 +77,12 @@ public class Namespace implements Iterable<Rule>, TreeElement {
   public Object accept(PhalidatorVisitor visitor) {
     return visitor.visit(this);
   }
+
+  public List<String> getRuleNames() {
+    List<String> ruleNames = new ArrayList<String>();
+    for(Rule rule: rules) {
+      ruleNames.add(rule.getName());
+    }
+    return ruleNames;
+  }
 }
