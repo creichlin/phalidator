@@ -60,5 +60,5 @@ Java Map validator using validation tree
 
 This validator uses the resulting validatiron tree of the parser. It's not generated and uses the dependencies including antlr4 runtime.
 
-[MapValidationExample.java](examples/java/src/ch/kerbtier/phalidator/examples/MapValidationExample.java) 
+[MapValidationExample.java](examples/java/src/ch/kerbtier/phalidator/examples/map/MapValidationExample.java) 
 
