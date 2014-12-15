@@ -32,7 +32,7 @@ public class XCompare implements XBool {
       this.sign = sign;
     }
 
-    String sign() {
+    public String sign() {
       return sign;
     }
   }

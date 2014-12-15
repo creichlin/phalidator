@@ -1,6 +1,7 @@
 package ch.kerbtier.phalidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Namespace implements Iterable<Rule>, TreeElement {
     children.put(namespace.getName(), namespace);
   }
 
-  private String getName() {
+  public String getName() {
     return name;
   }
   
@@ -32,6 +33,10 @@ public class Namespace implements Iterable<Rule>, TreeElement {
       return children.get(entity);
     }
     throw new EntityNotFoundException(entity);
+  }
+  
+  public Collection<String> getNamespaces() {
+    return children.keySet();
   }
 
   @Override

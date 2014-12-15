@@ -195,7 +195,7 @@ public class MapValidatorVisitor extends AbstractVisitor {
     Object right = xOr.getRight().accept(this);
     
     if(left instanceof Boolean && right instanceof Boolean) {
-      return ((Boolean)left) && ((Boolean)right);
+      return ((Boolean)left) || ((Boolean)right);
     }
     throw new InvalidOperandsException(xOr);
   }

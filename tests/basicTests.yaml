@@ -32,13 +32,20 @@ in:
 comparison:
   rule: |
     comparison {
-      less: 3 < 4 and 2 < 4 and -3 < 4 and !(4 < 4 or 4 < 5)
+      less: 3 < 4 and 2 < 4 and -3 < 4 and !(4 < 4 or 5 < 4)
       more: 4 > 3 and 5 > -3 and -3 > -8 and !(3 > 4 or 5 > 5)
       less_equals: 3 >= 3 and 3 >= 2 and !(3 >= 4)
       more_equals: 3 <= 3 and 3 <= 4 and !(4 <= 3)
       equals: 3 == 3 and !(2 == 3)
       str_equals : "AA" == "AA" and !("AB" == "BA")
       unequals: 2 != 3 and 3 != 2 and !(3 != 3)
+    }
+    
+boolOps :
+  rule: |
+    boolOps {
+      and: 1 == 1 and 1 == 1
+      or: 1 == 1 or 1 == 2
     }
 
 match:
