@@ -1,4 +1,4 @@
-<project default="resolve" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project default="dist" xmlns:ivy="antlib:org.apache.ivy.ant">
   
   <taskdef resource="org/apache/catalina/ant/catalina.tasks"/>
     
@@ -9,7 +9,6 @@
     <fileset dir="lib/bundles">
       <include name="*.jar"/>
     </fileset>
-    <pathelement location="../ltree/bin"/>
   </path>
   
   <target name="init">
@@ -17,17 +16,36 @@
     <mkdir dir="dist/lib"/>
   </target>
   
-  <target name="resolve">
+  <target name="resolve" depends="init">
     <ivy:retrieve pattern="lib/[type]s/[artifact]-[revision].[ext]"/>
   </target>
   
-  <target name="compile" depends="init">
+  <target name="compile" depends="resolve">
     <javac srcdir="src" destdir="build/bin" target="1.7" source="1.7" debuglevel="lines,vars,source" debug="true">
       <classpath refid="compile.classpath"/>
     </javac>
+    <copy todir="build/bin">
+       <fileset dir="src" excludes="**/*.java"/>
+    </copy>
   </target>
   
   <target name="dist" depends="compile">
     <jar jarfile="dist/lib/phalidator.jar" basedir="build/bin" includes="ch/kerbtier/phalidator/**" />
+    
+    <jar destfile="dist/phalidator-cli.jar">
+      <zipgroupfileset dir="lib/jars" includes="*.jar"/>
+      <zipgroupfileset dir="lib/bundles" includes="guava-17.0.jar"/>
+      <zipgroupfileset dir="dist/lib" includes="phalidator.jar"/>
+      <manifest>
+        <attribute name="Main-Class" value="ch.kerbtier.phalidator.export.Export"/>
+      </manifest>
+    </jar>
+  </target>
+  
+  <target name="publish-local" depends="dist" description="Publish this build into local repository">
+    <ivy:resolve/>
+    <ivy:publish pubrevision="1.0" status="release" resolver="local" overwrite="true" >
+      <artifacts pattern="dist/lib/[artifact].[ext]"/>
+    </ivy:publish>
   </target>
 </project>

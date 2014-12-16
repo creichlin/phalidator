@@ -1,10 +1,13 @@
 package ch.kerbtier.phalidator;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,6 +19,14 @@ import ch.kerbtier.phalidator.parser.PhalParser.StartContext;
 
 public class Parse {
   
+  public static Phalidator path(Path path) {
+    try {
+      return stream(new FileInputStream(path.toFile()));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public static Phalidator resource(Class<?> type, String name, Charset charset) {
     InputStream is = type.getResourceAsStream(name);
     return stream(is, charset);

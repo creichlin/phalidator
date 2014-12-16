@@ -1,5 +1,10 @@
 <ivy-module version="2.0">
-  <info organisation="ch.kerbtier" module="ltree"/>
+  <info organisation="ch.kerbtier" module="phalidator"/>
+  
+  <publications>
+    <artifact name="phalidator" type="jar" ext="jar"/>
+  </publications>
+
   <dependencies>
     <dependency org="commons-io" name="commons-io" rev="2.4"/>
     <dependency org="com.google.guava" name="guava" rev="17.0"/>
