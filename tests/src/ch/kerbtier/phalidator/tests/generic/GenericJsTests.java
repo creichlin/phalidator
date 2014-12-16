@@ -1,4 +1,4 @@
-package ch.kerbtier.phalidator.tests.basic.js;
+package ch.kerbtier.phalidator.tests.generic;
 
 import static org.junit.Assert.*;
 
@@ -16,12 +16,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.google.common.base.Joiner;
+
 @RunWith(Parameterized.class)
 public class GenericJsTests {
 
-  @Parameters
+  @Parameters(name = "{0}")
   public static Collection<Object[]> generateParams() {
-    PrepareJs prepare = new PrepareJs();
+    JsTestBuilder prepare = new JsTestBuilder();
     List<Object[]> parameters = new ArrayList<Object[]>();
     
     for(String test: prepare) {
@@ -63,16 +65,31 @@ public class GenericJsTests {
     }
     
     public void failed(Collection<String> rules) {
-      for(String r: rules) {
-        assertTrue("in " + name + " rule " + r + " failed", false);
+      if(rules.size() > 0) {
+        System.out.println(code);
+        assertTrue("in " + name + " rule " + Joiner.on(", ").join(rules) + " failed", false);
+      } else {
+        assertTrue(true);
       }
       called = true;
     }
     
     public void check() {
       if (!called) {
+        System.out.println(code);
         assertTrue("script not run... " + name, false);
       }
     }
+  }
+  
+  protected String addLineNumbers(String str) {
+    String out = "";
+    int cnt = 1;
+    for(String line: str.split("\n")) {
+      out += cnt + ": " + line + "\n";
+      cnt++;
+    }
+    
+    return out;
   }
 }

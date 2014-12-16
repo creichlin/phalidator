@@ -1,4 +1,4 @@
-package ch.kerbtier.phalidator.tests.basic;
+package ch.kerbtier.phalidator.tests.generic;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +27,7 @@ import ch.kerbtier.phalidator.Phalidator;
 import ch.kerbtier.phalidator.map.MapValidator;
 
 @RunWith(Parameterized.class)
-public class GenericBasicTests {
+public class GenericTests {
   
   private static Map<String, Object> map;
   
@@ -36,7 +36,7 @@ public class GenericBasicTests {
     Yaml yaml = new Yaml();
     try {
 
-     map = (Map<String, Object>) yaml.load(FileUtils.readFileToString(new File("tests/basicTests.yaml"), Charset.forName("utf-8")));
+     map = (Map<String, Object>) yaml.load(FileUtils.readFileToString(new File("tests/genericTests.yaml"), Charset.forName("utf-8")));
       
 
     } catch (IOException e) {
@@ -45,7 +45,8 @@ public class GenericBasicTests {
 
   }
 
-  @Parameters
+  @SuppressWarnings("unchecked")
+  @Parameters(name = "{4}")
   public static Collection<Object[]> generateParams() {
     // @Parameters is run before BeforeClass... it seems
     readData();
@@ -61,11 +62,10 @@ public class GenericBasicTests {
         Map<String, Map<String, Boolean>> inputs = (Map<String, Map<String, Boolean>>) entityMap.get("input");
         
         for(String input: inputs.keySet()) {
-          System.out.println("  " + input);
-          params.add(new Object[]{entity, phalidator, input, inputs.get(input)});
+          params.add(new Object[]{entity, phalidator, input, inputs.get(input), entity + "[" + input + "]"});
         }
       } else {
-        params.add(new Object[]{entity, phalidator, null, null});
+        params.add(new Object[]{entity, phalidator, null, null, entity});
       }
     }
 
@@ -77,7 +77,7 @@ public class GenericBasicTests {
   private String input;
   private List<String> expected;
 
-  public GenericBasicTests(String entity, Phalidator phalidator, String input, List<String> expected) {
+  public GenericTests(String entity, Phalidator phalidator, String input, List<String> expected, String name) {
     this.entity = entity;
     this.phalidator = phalidator;
     this.input = input;

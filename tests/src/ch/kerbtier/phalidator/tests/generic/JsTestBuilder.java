@@ -1,4 +1,4 @@
-package ch.kerbtier.phalidator.tests.basic.js;
+package ch.kerbtier.phalidator.tests.generic;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,19 +20,20 @@ import ch.kerbtier.phalidator.Parse;
 import ch.kerbtier.phalidator.Phalidator;
 import ch.kerbtier.phalidator.export.js.JsExport;
 
-public class PrepareJs implements Iterable<String> {
+public class JsTestBuilder implements Iterable<String> {
 
   private Map<String, Map<String, Object>> map;
   private Map<String, String> codes = new HashMap<String, String>();
 
-  public PrepareJs() {
+  public JsTestBuilder() {
     init();
   }
 
+  @SuppressWarnings("unchecked")
   private void init() {
     Yaml yaml = new Yaml();
     try {
-      map = (Map<String, Map<String, Object>>) yaml.load(FileUtils.readFileToString(new File("tests/basicTests.yaml"),
+      map = (Map<String, Map<String, Object>>) yaml.load(FileUtils.readFileToString(new File("tests/genericTests.yaml"),
           Charset.forName("utf-8")));
 
       for (String key : map.keySet()) {
@@ -60,18 +61,16 @@ public class PrepareJs implements Iterable<String> {
             jsCode += "\nvar invalid = phalidator.getInvalidRules('" + key + "', '" + key + "', {input: '" + input + "'});\n" +
                       "var allRules = [" + Joiner.on(", ").join(allRules) + "];\n" +
                       "var expectedRules = [" + Joiner.on(", ").join(expectedRules) + "];\n" +
-                      "var failed = [];" +
-                      "for(var cnt = 0; cnt < expectedRules.length; cnt++) {\n" +
+                      "var failed = [];\n" +
+                      "for(var cnt = 0; cnt < allRules.length; cnt++) {\n" +
                       "  var key = allRules[cnt];\n" +
-                      "  if(expectedRules.indexOf(key) == -1 || invalid.indexOf(key) > -1) {\n" +
+                      "  if((expectedRules.indexOf(key) == -1 && invalid.indexOf(key) == -1) || (expectedRules.indexOf(key) > -1 && invalid.indexOf(key) > -1)) {\n" +
                       "    failed.push(key);\n" +
                       "  }\n" +
                       "}\n" +
                       "api.failed(failed);\n";
             
-            System.out.println(addLineNumbers(jsCode));
-            
-            codes.put(key + " " + input, jsCode);
+            codes.put(key + "[" + input + "]", jsCode);
           }
 
         }
@@ -79,17 +78,6 @@ public class PrepareJs implements Iterable<String> {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  private String addLineNumbers(String str) {
-    String out = "";
-    int cnt = 1;
-    for(String line: str.split("\n")) {
-      out += cnt + ": " + line + "\n";
-      cnt++;
-    }
-    
-    return out;
   }
 
   @Override

@@ -1,16 +1,44 @@
 var phalidator = {
   ph: {
-    'in': function () {
-      return false;
+    'in': function (value, set) {
+      if(typeof set == 'string' || set instanceof String) {
+        set = set.split("").filter(function(item, pos, self) {
+          return self.indexOf(item) == pos;
+        });
+      }
+      
+      if(value instanceof Array) {
+        return value.every(function(v) {
+          return set.indexOf(v) > -1;
+        });
+      } else {
+        return set.indexOf(value) != -1;
+      }
     },
-    range: function() {
-      return [1, 2, 3, 4];
+    
+    range: function(from, to) {
+      var values = [];
+      if(to > from) {
+        for(var c = from; c <= to; c++) {
+          values.push(c);
+        }
+      } else {
+        for(var c = to; c >= from; c--) {
+          values.push(c);
+        }
+      }
+      return values;
     },
-    matches: function() {
-      return false;
+    
+    matches: function(str, regexp) {
+      var match = str.match(new RegExp(regexp));
+      return match != null && str == match[0];
     },
-    letters: function() {
-      return ['a', 'b', 'c'];
+    
+    letters: function(str) {
+      return str.split("").filter(function(item, pos, self) {
+        return self.indexOf(item) == pos;
+      });
     }
   },
   
