@@ -9,10 +9,12 @@
     <fileset dir="lib/bundles">
       <include name="*.jar"/>
     </fileset>
+    <pathelement path="build/runtime/bin"/>
   </path>
   
   <target name="init">
     <mkdir dir="build/bin"/>
+    <mkdir dir="build/runtime/bin"/>
     <mkdir dir="dist/lib"/>
   </target>
   
@@ -21,6 +23,8 @@
   </target>
   
   <target name="compile" depends="resolve">
+    <javac srcdir="runtime/src" destdir="build/runtime/bin" target="1.7" source="1.7" debuglevel="lines,vars,source" debug="true">
+    </javac>
     <javac srcdir="src" destdir="build/bin" target="1.7" source="1.7" debuglevel="lines,vars,source" debug="true">
       <classpath refid="compile.classpath"/>
     </javac>
@@ -31,11 +35,14 @@
   
   <target name="dist" depends="compile">
     <jar jarfile="dist/lib/phalidator.jar" basedir="build/bin" includes="ch/kerbtier/phalidator/**" />
+
+    <jar jarfile="dist/lib/phalidator-rt.jar" basedir="build/runtime/bin" includes="ch/kerbtier/phalidator/rt/**" />
     
     <jar destfile="dist/phalidator-cli.jar">
       <zipgroupfileset dir="lib/jars" includes="*.jar"/>
       <zipgroupfileset dir="lib/bundles" includes="guava-17.0.jar"/>
       <zipgroupfileset dir="dist/lib" includes="phalidator.jar"/>
+      <zipgroupfileset dir="dist/lib" includes="phalidator-rt.jar"/>
       <manifest>
         <attribute name="Main-Class" value="ch.kerbtier.phalidator.export.Export"/>
       </manifest>

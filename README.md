@@ -67,6 +67,17 @@ This validator uses the resulting validation tree of the parser. It's not genera
 
 [MapValidationExample.java](examples/java/src/ch/kerbtier/phalidator/examples/map/MapValidationExample.java)
 
+Java Map Validator Export
+-------------------------
+
+Generates java validation code. To run the code the phalidator-rt.jar needs to be included.
+
+    java -jar dist/phalidator-cli.jar rules.phal java-map org.test.validators.package target-folder
+    
+will create the java classes under given package at the source-folder.
+
+[Example java-map generator](examples/java-map-export/) (Build is needed before running)
+
 Javascript obj validator
 ------------------------
 

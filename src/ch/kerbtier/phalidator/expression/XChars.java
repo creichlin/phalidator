@@ -18,7 +18,7 @@ public class XChars implements XString, XSet {
     return visitor.visit(this);
   }
 
-  public Object getValue() {
+  public String getValue() {
     return value;
   }
 }

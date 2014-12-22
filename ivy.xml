@@ -3,6 +3,7 @@
   
   <publications>
     <artifact name="phalidator" type="jar" ext="jar"/>
+    <artifact name="phalidator-rt" type="jar" ext="jar"/>
   </publications>
 
   <dependencies>
@@ -10,5 +11,6 @@
     <dependency org="com.google.guava" name="guava" rev="17.0"/>
     <dependency org="org.antlr" name="antlr4-runtime" rev="4.2.2"/>
     <dependency org="org.yaml" name="snakeyaml" rev="1.14"/>
+    <dependency org="org.glassfish.jaxb" name="codemodel" rev="2.2.11"/>
   </dependencies>
 </ivy-module>

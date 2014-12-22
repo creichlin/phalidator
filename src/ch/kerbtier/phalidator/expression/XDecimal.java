@@ -20,7 +20,7 @@ public class XDecimal implements XNumber, XString {
     return visitor.visit(this);
   }
 
-  public Object getValue() {
+  public BigDecimal getValue() {
     return value;
   }
 }
